@@ -8,18 +8,9 @@ namespace RobotServer {
       static void Main (string[] args) {
          var builder = WebApplication.CreateBuilder (args);
          builder.WebHost.UseUrls ("http://localhost:9011");
-         //builder.Services.AddControllers ();
          builder.Services.AddEndpointsApiExplorer ();
-         builder.Services.AddSwaggerGen ();
          var app = builder.Build ();
-         //app.UseRouting ();
-         // Configure the HTTP request pipeline.
-         ////if (app.Environment.IsDevelopment ()) {
-            app.UseSwagger ();
-            app.UseSwaggerUI ();
-        //// }
          app.UseHttpsRedirection ();
-         //app.MapControllers ();
          app.MapPost ("GoHome", async () => {
             var ret = await Task.Run (() => SendMessage ("GoHome"));
             if (ret == "200") return Results.Ok ();
@@ -36,9 +27,7 @@ namespace RobotServer {
             if (ret == "200") return Results.Ok ();
             else return Results.BadRequest ();
          });
-
          app.Run ();
-
       }
 
       static string SendMessage (string message, string param = "") {
@@ -57,7 +46,7 @@ namespace RobotServer {
                ret = Encoding.UTF8.GetString (buffer, 0, bytesRead);
                Console.WriteLine ("Server : messages read from client: " + ret);
             }
-         } catch (Exception ex) {
+         } catch (Exception) {
             return ret;
          }
          return ret;
