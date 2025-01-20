@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotPlug", "RobotPlug.csproj", "{210ACD9D-D1B6-41DD-A111-FB9BADDAE26B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{210ACD9D-D1B6-41DD-A111-FB9BADDAE26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210ACD9D-D1B6-41DD-A111-FB9BADDAE26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210ACD9D-D1B6-41DD-A111-FB9BADDAE26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210ACD9D-D1B6-41DD-A111-FB9BADDAE26B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D90F4AB-977F-4542-B501-8DDDC5D5B6AD}
+	EndGlobalSection
+EndGlobal
