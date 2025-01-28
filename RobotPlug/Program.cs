@@ -1,4 +1,5 @@
-﻿using System.IO.Pipes;
+﻿using System.Diagnostics;
+using System.IO.Pipes;
 using System.Text;
 using Petrel;
 
@@ -11,6 +12,9 @@ namespace RobotPlug {
       public void Initialize () {
          lock (sLock) {
             Console.WriteLine ("Initialize RAPlug");
+            // Start RobotServer for robot interface
+            Process.Start ("RobotServer.exe");
+
             Brick.DisableBrickMechanism = false;
             Brick.Verbose = true;
             while (mRAInvoker == null) {
@@ -61,7 +65,11 @@ namespace RobotPlug {
          }
       }
 
-      public void Uninitialize () => Console.WriteLine ("UnInitialize RAPlug!");
+      public void Uninitialize () {
+         var proc = Process.GetProcessesByName ("RobotServer");
+         if (proc.Length > 0) proc[0].Kill ();
+         Console.WriteLine ("UnInitialize RAPlug!");
+      }
 
       IRightAngleInvoker? mRAInvoker;
       static readonly object sLock = new ();
