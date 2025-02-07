@@ -1,10 +1,13 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 
 namespace RobotClient {
    internal class Program {
       static async Task Main (string[] args) {
-         using HttpClient client = new HttpClient ();
-         client.BaseAddress = new Uri ("http://localhost:9011/RunProgram/p8.fx");
+         var handler = new HttpClientHandler ();
+         handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+         using var client = new HttpClient (handler);
+         client.BaseAddress = new Uri ("http://localhost:9011/");
          client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));
          for (; ; ) {
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -28,7 +31,7 @@ namespace RobotClient {
                   break;
                case "gohome":
                case "1":
-                  message += "GoHome/0";
+                  message += "GoHome";
                   break;
                case "2":
                   message += "RunProgram/p8";

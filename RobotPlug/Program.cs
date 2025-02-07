@@ -42,8 +42,8 @@ namespace RobotPlug {
                   if (mRAInvoker != null) {
                      switch (msgs[0].ToLower ()) {
                         case "gohome":
-                           int.TryParse (msgs[1], out int mode);
-                           ret = mRAInvoker.GoHome (mode);
+                           //int.TryParse (msgs[1], out int mode);
+                           ret = mRAInvoker.GoHome ();
                            break;
                         case "runprogram":
                            ret = mRAInvoker.RunProgram (msgs[1]);
@@ -69,6 +69,7 @@ namespace RobotPlug {
          var proc = Process.GetProcessesByName ("RobotServer");
          if (proc.Length > 0) proc[0].Kill ();
          Console.WriteLine ("UnInitialize RAPlug!");
+         Environment.Exit (0);
       }
 
       IRightAngleInvoker? mRAInvoker;

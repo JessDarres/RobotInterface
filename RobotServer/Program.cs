@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Petrel;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.Text;
 
 namespace RobotServer {
@@ -10,17 +8,17 @@ namespace RobotServer {
          builder.WebHost.UseUrls ("http://localhost:9011");
          builder.Services.AddEndpointsApiExplorer ();
          var app = builder.Build ();
-         app.UseHttpsRedirection ();
+         //app.UseHttpsRedirection ();
          app.MapPost ("GoHome", async () => {
             var ret = await Task.Run (() => SendMessage ("GoHome"));
             if (ret == "200") return Results.Ok ();
             else return Results.BadRequest ();
          });
-         app.MapPost ("GoHome/{mode}", async (string mode) => {
-            var ret = await Task.Run (() => SendMessage ("GoHome", mode));
-            if (ret == "200") return Results.Ok ();
-            else return Results.BadRequest ();
-         });
+         //app.MapPost ("GoHome/{mode}", async (string mode) => {
+         //   var ret = await Task.Run (() => SendMessage ("GoHome", mode));
+         //   if (ret == "200") return Results.Ok ();
+         //   else return Results.BadRequest ();
+         //});
 
          app.MapPost ("RunProgram/{progName}", async (string progName) => {
             var ret = await Task.Run (() => SendMessage ("RunProgram", progName));
