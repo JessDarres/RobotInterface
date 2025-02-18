@@ -17,7 +17,7 @@ namespace RobotClient {
             Console.WriteLine ("1 -> Goto home page");
             Console.WriteLine ("2 -> Run p8 program");
             var input = Console.ReadLine ();
-            var message = "http://localhost:9011/";
+            var message = "http://localhost:9011/api/RightAngle/App/";
             switch (input?.ToLower ()) {
                //case "gohome":
                //   Console.WriteLine ("Please enter the mode number :");

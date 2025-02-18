@@ -9,7 +9,7 @@ namespace RobotServer {
          builder.Services.AddEndpointsApiExplorer ();
          var app = builder.Build ();
          //app.UseHttpsRedirection ();
-         app.MapPost ("GoHome", async () => {
+         app.MapPost ("/api/RightAngle/App/GoHome", async () => {
             var ret = await Task.Run (() => SendMessage ("GoHome"));
             if (ret == "200") return Results.Ok ();
             else return Results.BadRequest ();
@@ -20,7 +20,7 @@ namespace RobotServer {
          //   else return Results.BadRequest ();
          //});
 
-         app.MapPost ("RunProgram/{progName}", async (string progName) => {
+         app.MapPost ("/api/RightAngle/App/RunProgram/{progName}", async (string progName) => {
             var ret = await Task.Run (() => SendMessage ("RunProgram", progName));
             if (ret == "200") return Results.Ok ();
             else return Results.BadRequest ();
