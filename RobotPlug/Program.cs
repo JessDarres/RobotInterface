@@ -12,17 +12,24 @@ namespace RobotPlug {
       public void Initialize () {
          lock (sLock) {
             Console.WriteLine ("Initialize RAPlug");
-            // Start RobotServer for robot interface
-            Process.Start ("RobotServer.exe");
-
+            ProcessStartInfo processStartInfo = new ProcessStartInfo {
+               FileName = "RobotServer.exe",
+               Arguments = "",
+               UseShellExecute = true
+            };
+            try {
+               Process.Start (startInfo: processStartInfo);
+               Console.WriteLine ("Robot server started successfully.");
+            } catch (Exception ex) {
+               Console.WriteLine ($"Error: {ex.Message}");
+            }
             Brick.DisableBrickMechanism = false;
-            Brick.Verbose = true;
+            Brick.Verbose = false;
             while (mRAInvoker == null) {
                var inv = Brick.GetAll<IRightAngleInvoker> ().ToList ();
                if (inv != null) mRAInvoker = inv[0];
             }
-            var thr = new Thread (ListenForMessages);
-            thr.Start ();
+            Task task = Task.Run (() => ListenForMessages ());
          }
       }
 
@@ -36,13 +43,11 @@ namespace RobotPlug {
                bytesRead = client.Read (buffer, 0, buffer.Length);
                if (bytesRead > 0) {
                   string message = Encoding.UTF8.GetString (buffer, 0, bytesRead);
-                  Console.WriteLine ("Received from pipe: " + message);
                   var msgs = message.Split (',');
                   var ret = false;
                   if (mRAInvoker != null) {
                      switch (msgs[0].ToLower ()) {
                         case "gohome":
-                           //int.TryParse (msgs[1], out int mode);
                            ret = mRAInvoker.GoHome ();
                            break;
                         case "runprogram":
@@ -55,7 +60,6 @@ namespace RobotPlug {
                   var messageBytes = Encoding.UTF8.GetBytes (ret ? "200" : "400");
                   client.Write (messageBytes);
                   client.WaitForPipeDrain ();
-                  Console.WriteLine ($"Client: cleint sent return code \"{ret}\" sucessfully");
                }
             } catch (TimeoutException) {
                Console.WriteLine ("Timeout occurred while connecting to pipe.");
@@ -69,11 +73,12 @@ namespace RobotPlug {
          var proc = Process.GetProcessesByName ("RobotServer");
          if (proc.Length > 0) proc[0].Kill ();
          Console.WriteLine ("UnInitialize RAPlug!");
-         Environment.Exit (0);
       }
 
+      #region Private Data ------------------------------------------
       IRightAngleInvoker? mRAInvoker;
       static readonly object sLock = new ();
       const string PipeName = "RAPIPE";
+      #endregion
    }
 }

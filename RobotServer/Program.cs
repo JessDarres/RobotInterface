@@ -51,8 +51,10 @@ namespace RobotServer {
          return ret;
       }
 
+      private static void OnProcessExit (object sender, EventArgs e) => mApp?.StopAsync ();
+
       const string PipeName = "RAPIPE";
-      static WebApplication mApp;
+      static WebApplication? mApp;
    }
 
    public class RobotRequest {
