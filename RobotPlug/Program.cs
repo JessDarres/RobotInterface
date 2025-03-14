@@ -53,6 +53,9 @@ namespace RobotPlug {
                         case "runprogram":
                            ret = mRAInvoker.RunProgram (msgs[1]);
                            break;
+                        case "ismachineinstartmode":
+                           ret = mRAInvoker.IsMachineInStartMode ();
+                           break;
                         default:
                            break;
                      }

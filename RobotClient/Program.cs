@@ -96,9 +96,9 @@ namespace RobotClient {
       static async Task Main () {
          Console.WriteLine ("Sending POST request...");
          for (; ; ) {
-            Console.WriteLine ("1 - GoHome, 2 - RunProgram, 3 - Exit");
+            Console.WriteLine ("1 - GoHome, 2 - RunProgram, 3 - IsMachineInStartMode, e - Exit");
             var ip = Console.ReadLine ();
-            if (ip == "3") return;
+            if (ip == "e") return;
             await SendPostRequest (ip);
          }
       }
@@ -111,8 +111,13 @@ namespace RobotClient {
                   Console.WriteLine ("Enter program name");
                   value = Console.ReadLine ();
                }
+
                var send = new {
-                  nodeName = name == "1" ? "GoHome" : "RunProgram",
+                  nodeName = name switch {
+                     "1" => "GoHome",
+                     "2" => "RunProgram",
+                     "3" => "IsMachineInStartMode",
+                  },
                   nodeValue = value,
                   updateTime = DateTime.UtcNow
                };
