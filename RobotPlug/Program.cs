@@ -5,7 +5,7 @@ using Petrel;
 
 namespace RobotPlug {
    [Brick]
-   internal class Program : IInitializable {
+   internal class Program : IInitializable, IWhiteboard {
       public static void Main () {
       }
 
@@ -54,7 +54,7 @@ namespace RobotPlug {
                            ret = mRAInvoker.RunProgram (msgs[1]);
                            break;
                         case "ismachineinstartmode":
-                           ret = mRAInvoker.IsMachineInStartMode;
+                           ret = MachineStatus.IsInStartMode;
                            break;
                         default:
                            break;
@@ -82,6 +82,14 @@ namespace RobotPlug {
       IRightAngleInvoker? mRAInvoker;
       static readonly object sLock = new ();
       const string PipeName = "RAPIPE";
+      public IEnvironment Environment { set => sEnvironment = value; get => sEnvironment!; }
+      static IEnvironment? sEnvironment;
+
+      public IMachineStatus MachineStatus { set => sMachineStatus = value; get => sMachineStatus!; }
+      static IMachineStatus? sMachineStatus;
+
+      public IJob? Job { set => sJob = value; get => sJob; }
+      static IJob? sJob;
       #endregion
    }
 }
