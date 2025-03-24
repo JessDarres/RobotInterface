@@ -34,7 +34,7 @@ namespace RobotPlug {
       }
 
       void ListenForMessages () {
-         while (true) {
+         while (MListen) {
             using var client = new NamedPipeClientStream (".", PipeName, PipeDirection.InOut);
             try {
                client.Connect ();
@@ -48,10 +48,10 @@ namespace RobotPlug {
                   if (mRAInvoker != null) {
                      switch (msgs[0].ToLower ()) {
                         case "gohome":
-                           ret = mRAInvoker.GoHome ();
+                           ret = MachineStatus.IsInStartMode == true ? false : mRAInvoker.GoHome ();
                            break;
                         case "runprogram":
-                           ret = mRAInvoker.RunProgram (msgs[1]);
+                           ret = MachineStatus.IsInStartMode == true ? false : mRAInvoker.RunProgram (msgs[1]);
                            break;
                         case "ismachineinstartmode":
                            ret = MachineStatus.IsInStartMode;
@@ -73,6 +73,7 @@ namespace RobotPlug {
       }
 
       public void Uninitialize () {
+         MListen = false;
          var proc = Process.GetProcessesByName ("RobotServer");
          if (proc.Length > 0) proc[0].Kill ();
          Console.WriteLine ("UnInitialize RAPlug!");
@@ -82,6 +83,7 @@ namespace RobotPlug {
       IRightAngleInvoker? mRAInvoker;
       static readonly object sLock = new ();
       const string PipeName = "RAPIPE";
+      bool MListen = true;
       public IEnvironment Environment { set => sEnvironment = value; get => sEnvironment!; }
       static IEnvironment? sEnvironment;
 
