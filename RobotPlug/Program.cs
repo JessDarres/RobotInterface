@@ -48,10 +48,13 @@ namespace RobotPlug {
                   if (mRAInvoker != null) {
                      switch (msgs[0].ToLower ()) {
                         case "gohome":
-                           ret = MachineStatus.IsInStartMode == true ? false : mRAInvoker.GoHome ();
+                           ret = MachineStatus.IsInStartMode ? false : mRAInvoker.GoHome ();
                            break;
                         case "runprogram":
-                           ret = MachineStatus.IsInStartMode == true ? false : mRAInvoker.RunProgram (msgs[1]);
+                           // If RunProgram command get it from run page, then we have to goto Homepage and call the RunProgram from Homepage.
+                           var homeRet = MachineStatus.Mode is EOperatingMode.Auto or EOperatingMode.SemiAuto && !MachineStatus.IsInStartMode ? mRAInvoker.GoHome () : true;
+                           if (homeRet && !MachineStatus.IsInStartMode) 
+                              ret = mRAInvoker.RunProgram (msgs[1]);
                            break;
                         case "ismachineinstartmode":
                            ret = MachineStatus.IsInStartMode;
